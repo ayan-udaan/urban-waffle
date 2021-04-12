@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: urban-waffle-sample-cronjob
+  namespace: VAR_KUBE_ENV
+  labels:
+    app: urban-waffle-sample-cronjob
+    config: udaan
+spec:
+  schedule: "* * * * *" #see https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            config: udaan
+        spec:
+          containers:
+            - name: urban-waffle-sample-cronjob
+              image: udaan.azurecr.io/urban-waffle-jobs:VAR_VERSION
+              resources:
+                limits:
+                  memory: 3072Mi
+                  cpu: 3000m
+                requests:
+                  memory: 3072Mi
+                  cpu: 2000m
+              args:
+                - java
+                - -cp
+                - /jars/*
+                - com.udaan.urbanwaffle.jobs.SampleJob
+          restartPolicy: Never

@@ -1,0 +1,4 @@
+user-service:
+  baseUrl: "http://svc-hack.dev.udaan.io/user-service"
+  httpClientConfig:
+    requestTimeout: 60000

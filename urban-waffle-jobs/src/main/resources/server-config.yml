@@ -1,0 +1,30 @@
+user-service:
+  baseUrl: "http://user-service"
+  httpClientConfig:
+    requestTimeout: 60000
+
+#TODO(Siddharth) revert this once Soumyadeep fixes problem for buildctl
+server:
+  rootPath: /
+  applicationConnectors:
+    - type: http
+      port: 7000
+  adminConnectors:
+    - type: http
+      port: 7001
+
+dcos:
+  cpus: 2 # Per instance of this service, number of cpus needed (e.g. 0.5, or 1.5)
+  mem: 2048 # Memory allocated to container in MBs
+  servicePort: 17000  # Service port as found on https://sites.google.com/a/udaan.com/tech/services
+  instancesDev: 0 # Number of instances to be spawned during deployment
+  instancesProd: 0 # Number of instances to be spawned during deployment
+  minimumHealthCapacity: 0
+  maximumOverCapacity: 0
+  job: true
+  jvmArgs: >-
+     -server -Xms1536m -Xmx1536m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+     -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9010
+     -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+  mainClass: com.udaan.urbanwaffle.jobs.ShouldNotBeCalled_JustHereToSatisfyPackagingSystem
+  healthcheck: default

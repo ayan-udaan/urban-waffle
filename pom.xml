@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.udaan</groupId>
+        <artifactId>udaan-parent</artifactId>
+        <version>[2.0,3.0)</version>
+    </parent>
+
+    <groupId>com.udaan.urbanwaffle</groupId>
+    <artifactId>urban-waffle-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Udaan urban-waffle</name>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <property><name>!exclude-default</name></property>
+            </activation>
+            <modules>
+                <module>urban-waffle-api</module>
+            </modules>
+        </profile>
+    </profiles>
+
+    <modules>
+        <module>urban-waffle-core</module>
+        <module>urban-waffle-service</module>
+        <module>urban-waffle-jobs</module>
+    </modules>
+
+    <properties>
+        <versions.udaan-common>[2.0,3.0)</versions.udaan-common>
+        <versions.udaan-user>[2.0,3.0)</versions.udaan-user>
+        <versions.dropwizard-proto>[2.0,3.0)</versions.dropwizard-proto>
+        <detekt.phase>verify</detekt.phase>
+        <klint.phase>none</klint.phase>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Udaan urban-waffle -->
+            <dependency>
+                <groupId>com.udaan.urbanwaffle</groupId>
+                <artifactId>urban-waffle-models</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.urbanwaffle</groupId>
+                <artifactId>urban-waffle-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Udaan Common -->
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-api</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-utils</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-server</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-client</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-slack</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-jdbi</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.dropwizard</groupId>
+                <artifactId>dropwizard-proto</artifactId>
+                <version>${versions.dropwizard-proto}</version>
+            </dependency>
+
+            <!-- Udaan Service Clients etc. -->
+            <dependency>
+                <groupId>com.udaan.users</groupId>
+                <artifactId>user-client</artifactId>
+                <version>${versions.udaan-user}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <!--klint-->
+            <plugin>
+                <groupId>com.github.gantsign.maven</groupId>
+                <artifactId>ktlint-maven-plugin</artifactId>
+                <version>1.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>${klint.phase}</phase>
+                        <id>format</id>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--detekt-->
+            <plugin>
+                <groupId>com.github.ozsie</groupId>
+                <artifactId>detekt-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <executions>
+                    <execution>
+                        <phase>${detekt.phase}</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <!--detekt rules configuration-->
+                            <config>default-detekt-config.yml</config>
+                            <parallel>true</parallel>
+                            <debug>true</debug>
+                            <baseline>detekt-baseline.xml</baseline>
+                            <!--detekt reporting-->
+                            <report>
+                                <report>xml:reports/detekt/${project.name}.xml</report>
+                                <report>html:reports/detekt/${project.name}.html</report>
+                            </report>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

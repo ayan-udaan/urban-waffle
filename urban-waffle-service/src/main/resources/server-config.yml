@@ -1,0 +1,43 @@
+user-service:
+  baseUrl: "http://user-service"
+  httpClientConfig:
+    requestTimeout: 60000
+
+server:
+  rootPath: /
+  applicationConnectors:
+  - type: http
+    port: 7000
+  adminConnectors:
+  - type: http
+    port: 7001
+
+logging:
+  level: WARN
+  loggers:
+    "io.dropwizard": INFO
+    "org.eclipse.jetty": INFO
+    "com.udaan": INFO
+    "com.udaan.urbanwaffle": DEBUG
+  appenders:
+    - type: console
+      threshold: INFO
+      timeZone: "UTC"
+      logFormat: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] [%logger] %msg %n"
+
+dcos:
+  cpus: 2 # Per instance of this service, number of cpus needed (e.g. 0.5, or 1.5)
+  mem: 2048 # Memory allocated to container in MBs
+  servicePort: 17000  # Service port as found on https://sites.google.com/a/udaan.com/tech/services
+  instancesDev: 1 # Number of instances to be spawned during deployment
+  instancesProd: 5 # Number of instances to be spawned during deployment
+  jvmArgs: >-
+     -server -Xms1536m -Xmx1536m -XX:+PrintGCDetails -XX:+PrintGCDateStamps
+     -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9010
+     -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+  mainClass: com.udaan.urbanwaffle.service.UrbanWaffleApplicationKt
+  healthcheck: default
+  # persistentDiskSize: 10240  # Size of the persistent disk needed. Use this only if you know that persistent disks "bind" your service locally to a machine
+  # maxLaunchDelaySeconds: 120 # Maximum number of seconds to wait for the service to come up
+  # minimumHealthCapacity: 1.0 # See the upgradeStrategy section under https://mesosphere.github.io/marathon/docs/rest-api.html
+  # maximumOverCapacity: 1.0 # See the upgradeStrategy section under https://mesosphere.github.io/marathon/docs/rest-api.html

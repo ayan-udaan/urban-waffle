@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.udaan</groupId>
+        <artifactId>udaan-parent</artifactId>
+        <version>[2.0,3.0)</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.udaan.urbanwaffle</groupId>
+    <artifactId>urban-waffle-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Udaan urban-waffle API</name>
+
+    <modules>
+        <module>urban-waffle-models</module>
+        <module>urban-waffle-client</module>
+    </modules>
+
+    <properties>
+        <versions.udaan-common>[2.0,3.0)</versions.udaan-common>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Udaan Common -->
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-api</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.udaan.common</groupId>
+                <artifactId>common-client</artifactId>
+                <version>${versions.udaan-common}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.3.0.Final</version>
+            </extension>
+        </extensions>
+    </build>
+</project>
